@@ -1,20 +1,74 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Student Digital Well-Being Analytics
 
-# Run and deploy your AI Studio app
+A full-stack web app for analyzing student digital well-being patterns and predicting social media addiction risk. The project combines a React + Vite frontend, a FastAPI backend, and a trained machine learning model to provide an interactive dashboard, prediction workflow, and personalized recommendations.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/b26296bb-6d0a-4c35-99a3-8feeaca56e3b
+- Interactive analytics dashboard with cohort filters and risk insights
+- Student risk prediction form with backend scoring
+- Explainable feature importance visualization
+- Personalized recommendations for high-risk users
+- Dataset-driven reporting and summary views
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- Frontend: React, TypeScript, Vite, Tailwind-style UI components, Recharts
+- Backend: Python, FastAPI, joblib, pandas
+- Data: CSV-based student dataset and trained model assets
 
+## Project Structure
+
+```text
+src/                # React frontend pages and UI components
+backend/            # FastAPI prediction service and model assets
+public/             # Static assets and training dataset
+train_model.py      # Training script for the ML model
+```
+
+## Prerequisites
+
+- Node.js 18+
+- Python 3.10+
+- npm
+- pip
+
+## Frontend Setup
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+2. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+3. Open the app in your browser at the local Vite URL shown in the terminal.
+
+## Backend Setup
+
+1. Create and activate a Python virtual environment:
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
+2. Install backend dependencies:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
+3. Start the FastAPI server:
+   ```bash
+   uvicorn backend.app:app --reload --port 8000
+   ```
+4. The API will be available at:
+   - http://127.0.0.1:8000/docs
+   - http://127.0.0.1:8000/predict
+
+## Notes
+
+- The frontend expects the backend to be running for prediction requests.
+- Make sure the model file exists in [backend/models/model.joblib](backend/models/model.joblib) before using predictions.
+- The project was initialized and uploaded to GitHub as a new repository.
+
+## License
+
+This project is intended for educational and demonstration purposes.
