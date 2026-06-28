@@ -1,0 +1,6 @@
+{
+  "name": "Student Digital Well-being Analytics",
+  "description": "An AI-powered analytics platform that helps understand the relationship between social media usage, sleep, mental health, academic performance, and digital addiction.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
