@@ -68,7 +68,7 @@ pip install -r requirements.txt
 Start the development server with Hot Module Reloading (HMR):
 
 ```bash
-uvicorn app:app --reload
+uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-The API will be available locally at `http://127.0.0.1:8000`. You can explore the interactive OpenAPI/Swagger interactive documentation at `http://127.0.0.1:8000/docs`.
+The API will be available locally at `http://127.0.0.1:8000`. On another device on the same network, use `http://YOUR_COMPUTER_IP:8000`. You can explore the interactive OpenAPI/Swagger documentation at `http://127.0.0.1:8000/docs`.

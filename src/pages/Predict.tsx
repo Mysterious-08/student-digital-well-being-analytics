@@ -21,13 +21,32 @@ export const Predict: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<PredictionResult | null>(null);
 
+  const getApiBaseUrl = () => {
+    const configuredUrl = import.meta.env.VITE_API_URL?.trim();
+    if (configuredUrl) {
+      return configuredUrl.replace(/\/+$/, '');
+    }
+
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host === '::1') {
+      return 'http://127.0.0.1:8000';
+    }
+
+    if (window.location.protocol === 'https:') {
+      throw new Error('Missing VITE_API_URL for the public backend.');
+    }
+
+    return `http://${host}:8000`;
+  };
+
 const handlePredictSubmit = async (data: PredictionInput) => {
   setIsAnalyzing(true);
   setResult(null);
 
   try {
+    const apiBaseUrl = getApiBaseUrl();
     const response = await axios.post(
-      "http://127.0.0.1:8000/predict",
+      `${apiBaseUrl}/predict`,
       {
         age: data.age,
         gender: data.gender,
@@ -59,7 +78,9 @@ const handlePredictSubmit = async (data: PredictionInput) => {
 
   } catch (error) {
     console.error(error);
-    alert("Prediction failed. Please check if the backend is running.");
+    alert(
+      "Prediction failed. Set VITE_API_URL to your public backend URL, or make sure the backend is reachable on this network."
+    );
   } finally {
     setIsAnalyzing(false);
   }

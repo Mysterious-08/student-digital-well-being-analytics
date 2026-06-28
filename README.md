@@ -42,7 +42,12 @@ train_model.py      # Training script for the ML model
    ```bash
    npm run dev
    ```
-3. Open the app in your browser at the local Vite URL shown in the terminal.
+3. For a public or separately hosted backend, create a `.env` file and set:
+   ```bash
+   VITE_API_URL=https://your-public-backend-url
+   ```
+   For local-only development, the frontend falls back to `http://127.0.0.1:8000`.
+4. Open the app in your browser at the local Vite URL shown in the terminal.
 
 ## Backend Setup
 
@@ -57,11 +62,12 @@ train_model.py      # Training script for the ML model
    ```
 3. Start the FastAPI server:
    ```bash
-   uvicorn backend.app:app --reload --port 8000
+   uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
    ```
 4. The API will be available at:
    - http://127.0.0.1:8000/docs
    - http://127.0.0.1:8000/predict
+   - http://YOUR_COMPUTER_IP:8000/docs when testing from another device on the same network
 
 ## Notes
 

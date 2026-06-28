@@ -3,7 +3,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import joblib
-from recommendations import generate_recommendations
+
+try:
+    from .recommendations import generate_recommendations
+except ImportError:
+    from recommendations import generate_recommendations
 
 app = FastAPI(
     title="Egypt Social Media Addiction Predictive API",
