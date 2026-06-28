@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      VITE_API_URL: ${{ secrets.VITE_API_URL || vars.VITE_API_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
       - name: Check backend URL
         run: |
           if [ -z "$VITE_API_URL" ]; then
-            echo "Missing GitHub secret: VITE_API_URL"
+            echo "Missing GitHub secret or repository variable: VITE_API_URL"
             echo "Set it to your public FastAPI backend URL before deploying."
             exit 1
           fi
