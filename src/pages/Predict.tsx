@@ -6,6 +6,7 @@ import { AIPredictionForm } from '../components/prediction/AIPredictionForm';
 import { AnalysisPanel } from '../components/prediction/AnalysisPanel';
 import { PredictionProgress } from '../components/prediction/PredictionProgress';
 import { PredictionInput } from '../types';
+import { calculateWellBeingReport } from '../utils/predictEngine';
 import { Cpu } from 'lucide-react';
 import axios from "axios";
 
@@ -33,10 +34,27 @@ export const Predict: React.FC = () => {
     }
 
     if (window.location.protocol === 'https:') {
-      throw new Error('Missing VITE_API_URL for the public backend.');
+      return null;
     }
 
     return `http://${host}:8000`;
+  };
+
+  const runLocalPrediction = (data: PredictionInput): PredictionResult => {
+    const report = calculateWellBeingReport(data);
+    const negativeFactors = report.topFactors
+      .filter((factor) => factor.impact === 'Negative')
+      .map((factor) => factor.factor);
+
+    return {
+      wellBeingScore: report.score,
+      riskLevel: report.riskLevel,
+      addictionScore: Number(((100 - report.score) / 10).toFixed(2)),
+      topFactors: negativeFactors.length > 0
+        ? negativeFactors.slice(0, 3)
+        : report.topFactors.slice(0, 3).map((factor) => factor.factor),
+      recommendations: report.recommendations,
+    };
   };
 
 const handlePredictSubmit = async (data: PredictionInput) => {
@@ -45,6 +63,11 @@ const handlePredictSubmit = async (data: PredictionInput) => {
 
   try {
     const apiBaseUrl = getApiBaseUrl();
+    if (!apiBaseUrl) {
+      setResult(runLocalPrediction(data));
+      return;
+    }
+
     const response = await axios.post(
       `${apiBaseUrl}/predict`,
       {
@@ -77,10 +100,8 @@ const handlePredictSubmit = async (data: PredictionInput) => {
 });
 
   } catch (error) {
-    console.error(error);
-    alert(
-      "Prediction failed. Set VITE_API_URL to your public backend URL, or make sure the backend is reachable on this network."
-    );
+    console.warn('Backend prediction failed. Falling back to local prediction.', error);
+    setResult(runLocalPrediction(data));
   } finally {
     setIsAnalyzing(false);
   }
