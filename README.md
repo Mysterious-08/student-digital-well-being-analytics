@@ -75,6 +75,19 @@ train_model.py      # Training script for the ML model
 - Make sure the model file exists in [backend/models/model.joblib](backend/models/model.joblib) before using predictions.
 - The project was initialized and uploaded to GitHub as a new repository.
 
+## Deploy Backend on Render
+
+1. Create a Render account and choose **New +** -> **Blueprint**.
+2. Connect this GitHub repository.
+3. Render will read [render.yaml](render.yaml) and create the FastAPI web service.
+4. After deploy finishes, copy the backend URL, for example:
+   ```text
+   https://student-digital-well-being-api.onrender.com
+   ```
+5. In GitHub, set `VITE_API_URL` to that backend URL:
+   `Settings -> Secrets and variables -> Actions -> Variables -> New repository variable`.
+6. Rerun the GitHub Pages workflow so the frontend rebuilds with the public backend URL.
+
 ## License
 
 This project is intended for educational and demonstration purposes.
